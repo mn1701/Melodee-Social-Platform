@@ -1,0 +1,16 @@
+{{! Use the main layout }}
+{{!< main }}
+<script>
+    window.onload = function() {
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = 'https://accounts.google.com/logout';
+        iframe.onload = function() {
+            window.location.href = '/';
+        };
+        document.body.appendChild(iframe);
+    };
+</script>
+
+<p style="text-align: center;">Logging out...</p>
+

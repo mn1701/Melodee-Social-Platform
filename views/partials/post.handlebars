@@ -1,0 +1,71 @@
+{{! Partial for a single post }}
+{{!< main }}
+<div class="post">
+    <div class="post-avatar">
+        <img src="{{#if avatar_url}}{{avatar_url}}{{else}}/avatar/{{username}}{{/if}}" alt="Avatar">
+    </div>
+    <div class="post-content preserve-newlines">
+        <h3>{{title}}</h3>
+        <p>{{content}}</p>
+        <hr>
+        <div class="post-status-bar">
+            {{!-- logging for debugging purposes --}}
+            <script>
+                console.log('Comparing:', '{{username}}', '{{user.username}}');
+            </script>
+            {{#ifCond username user.username}}
+                <button class="delete-button" data-id="{{id}}"><i class="fas fa-trash-alt"></i></button>
+            {{else}}
+                <button class="like-button" data-id="{{id}}" data-logged-in="{{loggedIn}}">♥</button>
+            {{/ifCond}}
+            <span>{{likes}} likes</span>
+            <span>by {{username}} on {{timestamp}}</span>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.addEventListener('click', handleLikeClick);
+        });
+
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', handleDeleteClick);
+        });
+    });
+
+    function handleLikeClick(event) {
+        const postId = event.target.getAttribute('data-id');
+        const loggedIn = event.target.getAttribute('data-logged-in') === 'true';
+        console.log('Logged In:', loggedIn); // debugging logs
+        console.log('Post ID:', postId); // debugging logs
+
+        if (!loggedIn) {
+            window.location.href = '/login';
+            return;
+        }
+
+        fetch(`/like/${postId}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });      
+    }
+
+    function handleDeleteClick(event) {
+        const buttonElement = event.target.closest('.delete-button');
+        const postId = buttonElement.getAttribute('data-id');
+        fetch(`/delete/${postId}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }    
+
+</script>
