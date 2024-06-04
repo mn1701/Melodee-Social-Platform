@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const multer = require('multer');
+const upload = multer({ dest: 'public/uploads/' });
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -11,6 +14,7 @@ const path = require('path');
 const crypto = require('crypto');
 const dbPath = path.resolve(__dirname, process.env.DATABASE_FILE);
 const canvas = require('canvas');
+const Handlebars = require('handlebars');
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Configuration and Setup
@@ -80,10 +84,18 @@ app.engine(
                     return options.fn(this);
                 }
                 return options.inverse(this);
-            },
+            },      
         },
     })
 );
+
+// Register the Handlebars helper function
+Handlebars.registerHelper('extractYouTubeEmbedUrl', function(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
+    const match = url.match(regex);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+});
+
 
 app.set('view engine', 'handlebars');
 app.set('views', './views');
@@ -108,7 +120,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -162,6 +176,54 @@ passport.deserializeUser(async (user, done) => {
 // Routes
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+// NEW CODE START HERE
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'public')));
+
+(async () => {
+    const db = await sqlite.open({ filename: dbPath, driver: sqlite3.Database });
+
+    const columns = await db.all(`PRAGMA table_info(posts)`);
+    const columnNames = columns.map(column => column.name);
+
+    if (!columnNames.includes('mediaPath')) {
+        await db.run(`ALTER TABLE posts ADD COLUMN mediaPath TEXT`);
+    }
+    if (!columnNames.includes('mediaType')) {
+        await db.run(`ALTER TABLE posts ADD COLUMN mediaType TEXT`);
+    }
+    if (!columnNames.includes('mediaUrl')) {
+        await db.run(`ALTER TABLE posts ADD COLUMN mediaUrl TEXT`);
+    }
+
+    console.log('Database schema checked and updated successfully.');
+})();
+
+
+function handleMediaTypeChange() {
+    const mediaType = document.getElementById('mediaType').value;
+    const mediaUrlContainer = document.getElementById('mediaUrlContainer');
+    const youtubeUrlContainer = document.getElementById('youtubeUrlContainer');
+
+    if (mediaType === 'youtube') {
+        mediaUrlContainer.style.display = 'none';
+        youtubeUrlContainer.style.display = 'block';
+    } else {
+        mediaUrlContainer.style.display = 'block';
+        youtubeUrlContainer.style.display = 'none';
+    }
+}
+
+// NEW CODE STOP HERE
+
+
+
+
+
+
+
 // Route to initiate Google authentication
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -206,6 +268,8 @@ app.post('/registerUsername', async (req, res) => {
     }
 });
 
+
+
 // Route to render the home page with posts sorted by specified criteria
 app.get('/', async (req, res) => {
     const sort = req.query.sort || 'time_desc'; // default sorting
@@ -233,6 +297,35 @@ app.get('/', async (req, res) => {
 
     res.render('home', { posts, user, sort, feedTitle });
 });
+
+// NEW CODE
+app.post('/posts', isAuthenticated, upload.single('media'), async (req, res) => {
+    const { title, content, mediaType, mediaUrl } = req.body;
+    const user = req.session.user;
+
+    if (user) {
+        const db = await dbPromise;
+        const timestamp = new Date().toISOString();
+        const formattedTimestamp = formatTimestamp(timestamp, true);
+        let mediaPath = null;
+
+        if (req.file) {
+            mediaPath = `/uploads/${req.file.filename}`;
+        }
+
+        await db.run('INSERT INTO posts (title, content, username, timestamp, likes, mediaPath, mediaType, mediaUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 
+                     [title, content, user.username, formattedTimestamp, 0, mediaPath, mediaType, mediaUrl]);
+        res.redirect('/');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+// Route to serve uploaded media files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// NEW CODE STOP HERE
+
+
 
 // Route to render the login/register page for login
 app.get('/login', (req, res) => {
@@ -271,6 +364,7 @@ app.get('/post/:id', async (req, res) => {
     }
 });
 
+/* OLD CODE
 // Route to handle creating a new post
 app.post('/posts', isAuthenticated, async (req, res) => {
     const { title, content } = req.body;
@@ -286,6 +380,7 @@ app.post('/posts', isAuthenticated, async (req, res) => {
         res.redirect('/login');
     }
 });
+*/ 
 
 // Route to handle liking/unliking a post
 app.post('/like/:id', isAuthenticated, async (req, res) => {

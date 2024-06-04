@@ -16,10 +16,40 @@
                 <input type="text" name="title" placeholder="Title" required>
                 <textarea name="content" id="post-c" placeholder="What's on your mind?" required></textarea>
 
+                <div>
+                    <label for="media">Upload Media:</label>
+                    <input type="file" id="media" name="media">
+                </div>
+                <div>
+                    <label for="mediaType">Media Type:</label>
+                    <select id="mediaType" name="mediaType">
+                        <option value="image">Image</option>
+                        <option value="audio">Audio</option>
+                        <option value="video">Video</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="soundcloud">SoundCloud</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="mediaUrl">Media URL:</label>
+                    <input type="url" id="mediaUrl" name="mediaUrl">
+                </div>
+
+                <div id="youtubeUrlContainer" style="display: none;">
+                    <label for="youtubeUrl">YouTube Video URL:</label>
+                    <input type="url" id="youtubeUrl" name="youtubeUrl">
+                </div>
+
+
                 <div class="form-actions">
                     <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button>
                     <button type="submit" class="post-button">Post</button>
                 </div>
+
+
+                
+
+
             </form>
 
             <div id="emoji-container" class="emoji-panel" style="display: none;">
