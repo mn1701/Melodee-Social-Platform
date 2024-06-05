@@ -1,5 +1,4 @@
 {{! Partial for a single post }}
-{{!< main }}
 <div class="post">
     <div class="post-avatar">
         <img src="{{#if avatar_url}}{{avatar_url}}{{else}}/avatar/{{username}}{{/if}}" alt="Avatar">
@@ -7,8 +6,6 @@
     <div class="post-content preserve-newlines">
         <h3>{{title}}</h3>
         <p>{{content}}</p>
-      
-
         {{#if mediaPath}}
             <div class="post-media">
                 {{#ifCond mediaType 'image'}}
@@ -27,16 +24,15 @@
             </div>
         {{/if}}
         {{#if mediaUrl}}
-            <div class="post-media">
-                {{#ifCond mediaType 'youtube'}}
-                    <iframe width="560" height="315" src="{{extractYouTubeEmbedUrl mediaUrl}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                {{else ifCond mediaType 'soundcloud'}}
-                    <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="{{mediaUrl}}"></iframe>
-                {{/ifCond}}
-            </div>
+            <div class="post-media {{#ifCond mediaType 'youtube'}}youtube{{/ifCond}}">
+            {{#ifCond mediaType 'youtube'}}
+                <iframe src="{{extractYouTubeEmbedUrl mediaUrl}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {{else ifCond mediaType 'soundcloud'}}
+                <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="{{mediaUrl}}"></iframe>
+            {{/ifCond}}
+    </div>
         {{/if}}
         <hr>
-
 
         <div class="post-status-bar">
             {{!-- logging for debugging purposes --}}
@@ -55,7 +51,6 @@
 </div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.like-button').forEach(button => {
             button.addEventListener('click', handleLikeClick);
@@ -97,5 +92,4 @@
             }
         });
     }    
-
 </script>

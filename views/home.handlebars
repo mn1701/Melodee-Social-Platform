@@ -15,9 +15,6 @@
 
                 <input type="text" name="title" placeholder="Title" required>
                 <textarea name="content" id="post-c" placeholder="What's on your mind?" required></textarea>
-
-                
-
                 <div>
                     <label for="media">Upload Media:</label>
                     <input type="file" id="media" name="media">
@@ -46,13 +43,7 @@
                     <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button>
                     <button type="submit" class="post-button">Post</button>
                 </div>
-
-
-                
-
-
             </form>
-
             <div id="emoji-container" class="emoji-panel" style="display: none;">
                 <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="searchEmojis()">
                 <div id="emoji-grid"></div>
