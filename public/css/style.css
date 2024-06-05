@@ -1,3 +1,27 @@
+/* Adjust Image Size */
+/* Adjust Image Size */
+.post-form img {
+    max-width: 100%; /* Ensure images don't exceed the width of the container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure the image doesn't extend beyond container width */
+    margin: 10px auto; /* Add some margin for spacing */
+}
+
+
+/* Responsive Design */
+@media (max-width: 590px) {
+    /* Other existing styles... */
+
+    .post-form img {
+        max-width: calc(100% - 40px); /* Adjust max-width to fit within post form */
+        margin: 0 auto; /* Center the image */
+        display: block; /* Ensure the image doesn't extend beyond container width */
+    }
+}
+
+
+
+
 /* General Styles */
 body {
     font-family: Arial, sans-serif;

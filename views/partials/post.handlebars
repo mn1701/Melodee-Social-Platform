@@ -10,7 +10,7 @@
         {{#if mediaPath}}
             <div class="post-media">
                 {{#ifCond mediaType 'image'}}
-                    <img src="{{mediaPath}}" alt="Image">
+                    <img src="{{mediaPath}}" alt="Image" style="max-width: 100%; height: auto; display: block; margin: 10px auto;">
                 {{else ifCond mediaType 'audio'}}
                     <audio controls>
                         <source src="{{mediaPath}}" type="audio/mpeg">
