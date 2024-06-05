@@ -72,6 +72,13 @@ let db = new sqlite3.Database(dbPath, (err) => {
 // Set up Handlebars view engine with custom helpers
 //
 
+
+
+Handlebars.registerHelper('extractYouTubeEmbedUrl', function(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
+    const match = url.match(regex);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+});
 app.engine(
     'handlebars',
     exphbs.engine({
@@ -84,17 +91,14 @@ app.engine(
                     return options.fn(this);
                 }
                 return options.inverse(this);
-            },      
+            },
+           
+            extractYouTubeEmbedUrl: Handlebars.helpers.extractYouTubeEmbedUrl      
         },
     })
 );
 
-// Register the Handlebars helper function
-Handlebars.registerHelper('extractYouTubeEmbedUrl', function(url) {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/;
-    const match = url.match(regex);
-    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
-});
+
 
 
 app.set('view engine', 'handlebars');
@@ -358,7 +362,7 @@ app.get('/post/:id', async (req, res) => {
     const db = await dbPromise;
     const post = await db.get('SELECT * FROM posts WHERE id = ?', [req.params.id]);
     if (post) {
-        res.render('postDetail', { post });
+        res.render('postDetail', { post, user: req.session.user });
     } else {
         res.redirect('/error');
     }
