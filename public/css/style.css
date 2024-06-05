@@ -124,6 +124,9 @@ body {
     align-items: center;
     justify-content: center;
     padding: 10px 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 10px;
 }
 
 .sidebar nav ul li a i {
@@ -319,6 +322,8 @@ textarea#post-c {
     text-decoration: none;
     display: flex;
     align-items: center;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .comment-icon i {
@@ -326,7 +331,7 @@ textarea#post-c {
 }
 
 .comment-icon:hover {
-    color: #90bcff;
+    background-color: #444;
 }
 
 /* Ensure all media elements don't overflow */
@@ -386,10 +391,6 @@ footer {
 a {
     text-decoration: none;
     color: #90bcff; /* Light blue links */
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 h1, h2, h3 {
