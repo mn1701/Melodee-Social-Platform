@@ -451,6 +451,10 @@ app.post('/delete/:id', isAuthenticated, async (req, res) => {
     res.redirect(redirectUrl);
 });
 
+app.get('/write-post', isAuthenticated, (req, res) => {
+    res.render('write-post', { user: req.session.user });
+});
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Support Functions and Variables
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

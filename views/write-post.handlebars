@@ -1,0 +1,119 @@
+{{! Use the main layout }}
+<section class="content-container">
+    <section class="post-form">
+
+    <h2>Write a new {{postNeoType}}!</h2>
+
+
+    <form action="/posts" method="POST" enctype="multipart/form-data">
+        <!-- title input field name = "title" -->
+        <!-- text area input field name = "content" -->
+
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="content" id="post-c" placeholder="What's on your mind?" required></textarea>
+        <div>
+            <label for="media">Upload Media:</label>
+            <input type="file" id="media" name="media">
+        </div>
+        <div>
+            <label for="mediaType">Media Type:</label>
+            <select id="mediaType" name="mediaType">
+                <option value="image">Image</option>
+                <option value="audio">Audio</option>
+                <option value="video">Video</option>
+                <option value="youtube">YouTube</option>
+            </select>
+        </div>
+        <div>
+            <label for="mediaUrl"></label>
+            <input type="url" id="mediaUrl" name="mediaUrl" placeholder="Media Url">
+        </div>
+
+        <div id="youtubeUrlContainer" style="display: none;">
+            <label for="youtubeUrl">YouTube Video URL:</label>
+            <input type="url" id="youtubeUrl" name="youtubeUrl">
+        </div>
+
+
+        <div class="form-actions">
+            <button type="button" class="emoji-button" onclick="toggleEmojiPanel()">😀</button>
+            <button type="submit" class="post-button">Post</button>
+        </div>
+    </form>
+    <div id="emoji-container" class="emoji-panel" style="display: none;">
+        <input type="text" id="emoji-search" placeholder="Search emojis..." oninput="searchEmojis()">
+        <div id="emoji-grid"></div>
+    </div>
+    </section>
+</section>
+
+
+<script>
+
+/*
+ You want to show a subset of the emojis. About 200. However,
+ you also want the user to be able to search all emojis,
+ so, put them in this array when the array is empty so 
+ that you have them.
+*/
+
+let allEmojis = [];  // Global list to hold all emojis
+
+function toggleEmojiPanel() {
+    const container = document.getElementById('emoji-container');
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+
+
+    if(container.style.display === 'block' && allEmojis.length == 0){
+        fetch('https://emoji-api.com/emojis?access_key=629ca12864cbf1d1d9209a4338b45311b470ff96')
+            .then(response => response.json())
+            .then(data => {
+                allEmojis = data;
+                displayEmojis(allEmojis);
+            });
+    }
+}
+
+function displayEmojis(emojis,limit=200) {
+    const container = document.getElementById('emoji-grid');
+    container.innerHTML = '';  // Clear previous results
+    if (Array.isArray(emojis) && emojis.length > 0) {
+        emojis.slice(0, limit).forEach(emoji => {
+            const emojiElement = document.createElement('span');
+            emojiElement.textContent = emoji.character;
+            emojiElement.title = emoji.slug;  // Showing the emoji name on hover
+            emojiElement.style.cursor = 'pointer';
+            emojiElement.onclick = () => insertEmoji(emoji.character);
+            container.appendChild(emojiElement);
+        });
+    } else {
+        container.textContent = 'No emojis found. Try a different search!';
+    }
+}
+
+function searchEmojis() {
+    const searchTerm = document.getElementById('emoji-search').value.toLowerCase();
+    // array.filter takes a predicate
+    // use string.includes. 
+
+    const filteredEmojis = allEmojis.filter(emoji => 
+        emoji.slug.toLowerCase().includes(searchTerm) || 
+        emoji.character.includes(searchTerm)
+    );
+    
+    displayEmojis(filteredEmojis);
+}
+
+function insertEmoji(emoji) {
+    const textarea = document.getElementById('post-c');
+    textarea.value += emoji;
+    textarea.focus();
+}
+
+function updateSort(sortOption) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('sort', sortOption);
+    window.location.search = urlParams.toString();
+}
+
+</script>

@@ -5,19 +5,9 @@ body {
     padding: 0;
     background-color: #111211; /* Dark grey background */
     color: #f1f1f1; /* Light grey text */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
     height: 100vh;
     overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
-/* Container for Sidebar and Main Content */
-.main-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    max-width: 1000px;
 }
 
 /* Sidebar Styles */
@@ -32,8 +22,18 @@ body {
     padding: 20px 0;
     position: fixed; /* Fix the sidebar to stay in view */
     top: 0; /* Align to the top of the viewport */
+    left: 0; /* Fix to the left of the viewport */
     z-index: 1000; /* Ensure it stays on top */
     border-right: 0.5px solid #f1f1f1; /* Thin white right border */
+}
+
+/* Container for Main Content */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: calc(100% - 250px); /* Adjust for sidebar width */
+    margin-left: 250px; /* Create space for the fixed sidebar */
 }
 
 /* Content Wrapper */
@@ -41,7 +41,6 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-left: 250px; /* Create space for the fixed sidebar */
 }
 
 .sidebar .logo {
@@ -104,12 +103,6 @@ body {
 }
 
 /* Main Content */
-.content-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 .content-container {
     flex: 1;
     padding: 20px;
@@ -135,11 +128,84 @@ body {
     background-color: #111211; /* Same dark grey */
     border: none; /* No border for container */
     border-radius: 8px;
-    max-width: 650px;
     display: flex; /* Use flexbox for the post layout */
     flex-direction: row;
     align-items: flex-start;
 }
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.post-form h2 {
+    margin-bottom: 20px;
+}
+
+.post-form form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-form form input[type="text"],
+.post-form form textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #111211; /* Dark grey for inputs */
+    color: #f1f1f1; /* Light grey text */
+}
+
+textarea#post-c {
+    min-height: 150px; 
+    resize: vertical; 
+}
+
+.post-form form input[type="file"],
+.post-form form select,
+.post-form form input[type="url"] {
+    width: 25%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #111211; /* Dark grey for inputs */
+    color: #f1f1f1; /* Light grey text */
+}
+.post-form form select {
+    width: 30%;
+}
+.post-form form input[type="url"] {
+    width: 39%;
+}
+
+.post-form .form-actions {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.post-form .emoji-button,
+.post-form .post-button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+}
+
+.post-form .emoji-button:hover,
+.post-form .post-button:hover {
+    background-color: #123962;
+}
+
 
 .post {
     margin: 0; /* Remove margin */
@@ -148,6 +214,7 @@ body {
     border-top: 1px solid #f1f1f1; /* Thin white top border */
     border-bottom: 1px solid #f1f1f1; /* Thin white bottom border */
     border-radius: 0; /* Remove border radius */
+    width: 100%;
 }
 
 .post:first-child {
@@ -160,7 +227,6 @@ body {
     width: 30px; /* Maintain aspect ratio */
     margin-right: 10px;
 }
-
 
 .post-content {
     overflow-wrap: break-word;
@@ -284,35 +350,6 @@ input[type="text"], textarea {
     justify-content: center;
 }
 
-textarea#post-c {
-    width: 90%;
-    min-height: 150px; 
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #111211; /* Dark grey for textarea */
-    color: #f1f1f1; /* Light grey text */
-    resize: vertical; 
-}
-
-button.post-button, button.emoji-button  {
-    flex: 1;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-}
-
-button:hover {
-    background-color: #123962;
-}
-
 @media (max-width: 1000px) {
     .sidebar {
         width: 70px; /* Shrink the sidebar width */
@@ -324,7 +361,7 @@ button:hover {
     }
 
     .sidebar .logo h1,
-    .nav-text {
+    .nav-text{
         display: none; /* Hide the text for smaller screens */
     }
 
@@ -349,6 +386,7 @@ button:hover {
         margin-top: -300px;
         scale: 80%;
         border: none;
+        margin-left: -300px;
     }
     
     .content-wrapper {
@@ -356,6 +394,7 @@ button:hover {
     }
 
     .post-form{
+        margin-top: 300px;
         line-height: 28px;
      }
 }
@@ -363,7 +402,6 @@ button:hover {
 
 @media (max-width: 590px) {
     .content-container {
-        margin-left: -30px;
         width: 480px;
         margin-top: -270px;
     }
@@ -401,4 +439,8 @@ button:hover {
         margin: 0 auto; /* Center the image */
         display: block; /* Ensure the image doesn't extend beyond container width */
     }
+
+    .post-form{
+        margin-top: 250px;
+     }
 }

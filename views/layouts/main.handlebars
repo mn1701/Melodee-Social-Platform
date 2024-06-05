@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="main-container">
-        <div class="sidebar">
+    <div class="sidebar">
             <div class="logo">
                 <a href="/">
                     <img src="/images/logo.png" class="header-logo" alt="Logo">
@@ -24,6 +23,7 @@
                 <ul>
                     {{#if loggedIn}}
                         <li><a href="/"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a></li>
+                        <li><a href="/write-post"><i class="fas fa-edit"></i> <span class="nav-text">Write a Post</a></li>
                         <li><a href="/profile"><i class="fas fa-user"></i> <span class="nav-text">Profile</span></a></li>
                         <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">Logout <span>{{user.username}}</span></span></a></li>
                         <div class="user-info">
@@ -44,6 +44,8 @@
                 </ul>
             </nav>
         </div>
+    <div class="main-container">
+        
         <div class="content-wrapper">
             {{{body}}}
         </div>
