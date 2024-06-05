@@ -3,8 +3,8 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #111211; /* Dark grey background */
+    color: #f1f1f1; /* Light grey text */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -22,8 +22,8 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    background-color: #123962;
-    color: #fff;
+    background-color: #111211; /* Same dark grey */
+    color: #f1f1f1; /* Light grey text */
     width: 250px;
     height: 100vh; /* Full viewport height */
     display: flex;
@@ -33,6 +33,7 @@ body {
     position: fixed; /* Fix the sidebar to stay in view */
     top: 0; /* Align to the top of the viewport */
     z-index: 1000; /* Ensure it stays on top */
+    border-right: 0.5px solid #f1f1f1; /* Thin white right border */
 }
 
 /* Content Wrapper */
@@ -59,7 +60,7 @@ body {
     margin: 0;
     font-size: 40px;
     display: inline-block; /* Ensure the title is inline */
-    color: #fff;
+    color: #f1f1f1; /* Light grey text */
 }
 
 .sidebar nav ul {
@@ -74,7 +75,7 @@ body {
 }
 
 .sidebar nav ul li a {
-    color: #fff;
+    color: #f1f1f1; /* Light grey text */
     font-weight: bold;
     text-decoration: none;
     display: flex;
@@ -88,7 +89,7 @@ body {
 }
 
 .sidebar nav ul li a:hover {
-    background-color: #007BFF;
+    background-color: #444; /* Slightly lighter grey for hover */
 }
 
 .sidebar .user-info {
@@ -112,10 +113,9 @@ body {
 .content-container {
     flex: 1;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #111211; /* Same dark grey */
+    border: none; /* No border for container */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     max-width: 800px;
     width: 100%;
     margin: 0 auto; /* Center the content container */
@@ -126,15 +126,15 @@ body {
 #feed-title, .sort-options {
     margin-left: 20px; /* Adjust the left margin to align with posts */
     padding: 0 20px; /* Add padding if necessary */
+    color: #f1f1f1; /* Light grey text */
 }
 
 .post-form, .post {
     margin: 20px 0;
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #111211; /* Same dark grey */
+    border: none; /* No border for container */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     max-width: 650px;
     display: flex; /* Use flexbox for the post layout */
     flex-direction: row;
@@ -144,15 +144,14 @@ body {
 .post {
     margin: 0; /* Remove margin */
     padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-top: none; /* Remove top border to share borders between posts */
+    background-color: #111211; /* Same dark grey */
+    border-top: 1px solid #f1f1f1; /* Thin white top border */
+    border-bottom: 1px solid #f1f1f1; /* Thin white bottom border */
     border-radius: 0; /* Remove border radius */
-    box-shadow: none; /* Remove box-shadow */
 }
 
 .post:first-child {
-    border-top: 1px solid #ddd; /* Add top border to the first post */
+    border-top: 1px solid #f1f1f1; /* Add top border to the first post */
 }
 
 .post-avatar img {
@@ -166,6 +165,7 @@ body {
 .post-content {
     overflow-wrap: break-word;
     flex: 1;
+    color: #f1f1f1; /* Light grey text */
 }
 
 .post-status-bar {
@@ -173,6 +173,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+    color: #f1f1f1; /* Light grey text */
 }
 
 /* Ensure all media elements don't overflow */
@@ -183,18 +184,26 @@ body {
     display: block;
 }
 
-.post-media iframe, .post-media img, .post-media video, .post-media audio {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
+/* Specific styles for YouTube iframes to maintain aspect ratio */
+.post-media.youtube {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
 }
 
-
+.post-media.youtube iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
 
 .like-button, .delete-button {
-    color: rgb(144, 188, 255);
-    background-color: white;
+    color: #90bcff; /* Light blue for buttons */
+    background-color: #111211; /* Match post background */
     border: none;
     cursor: pointer;
     font-size: 1.2em;
@@ -202,12 +211,12 @@ body {
 
 .like-button:hover, .delete-button:hover {
     color: #f04646;
-    background-color: white;
+    background-color: #111211;
 }
 
 footer {
-    color: #333;
-    background-color: #f9f9f9;
+    color: #f1f1f1; /* Light grey text */
+    background-color: #111211; /* Match body background */
     text-align: center;
     padding: 10px 20px;
     width: 100%;
@@ -218,7 +227,7 @@ footer {
 
 a {
     text-decoration: none;
-    color: #007BFF;
+    color: #90bcff; /* Light blue links */
 }
 
 a:hover {
@@ -241,6 +250,8 @@ input[type="text"], textarea {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #111211; /* Dark grey for inputs */
+    color: #f1f1f1; /* Light grey text */
     align-items: center;
     justify-content: center;
 }
@@ -251,6 +262,8 @@ textarea#post-c {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #111211; /* Dark grey for textarea */
+    color: #f1f1f1; /* Light grey text */
     resize: vertical; 
 }
 
@@ -307,7 +320,6 @@ button:hover {
     .content-container {
         margin-top: -300px;
         scale: 80%;
-        box-shadow: none;
         border: none;
     }
     
