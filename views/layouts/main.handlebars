@@ -12,43 +12,43 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <a href="/">
-                <img src="/images/logo.png" class="header-logo" alt="Logo">
-                <h1>{{{appName}}}</h1>
-            </a>
-        </div>
-        <nav>
-            <ul>
-                <!-- conditional rendering based on variables - Is the user logged in?-->
-                {{#if loggedIn}}
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/logout">Logout <span>{{user.username}}</span> </a></li>
-                    <div class="user-info">
-
-                        <!-- conditional rendering based on variables -->
-                        <a href="/profile">
-                        <img src="{{#if user.avatarUrl}}
-                                        {{user.avatarUrl}}
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="logo">
+                <a href="/">
+                    <img src="/images/logo.png" class="header-logo" alt="Logo">
+                    <h1>{{{appName}}}</h1>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    {{#if loggedIn}}
+                        <li><a href="/"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a></li>
+                        <li><a href="/profile"><i class="fas fa-user"></i> <span class="nav-text">Profile</span></a></li>
+                        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">Logout <span>{{user.username}}</span></span></a></li>
+                        <div class="user-info">
+                            <a href="/profile">
+                                <img src="{{#if user.avatarUrl}}
+                                    {{user.avatarUrl}}
                                     {{else}}
-                                        /avatar/{{user.username}}
+                                    /avatar/{{user.username}}
                                     {{/if}}" 
                                     alt="User Avatar" 
                                     class="header-avatar">
-                        </a>
-                        
-                    </div>
-                {{else}}
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/login">Login/Register</a></li>
-                {{/if}}
-            </ul>
-        </nav>
-    </header>
-
-    {{{body}}}
+                            </a>
+                        </div>
+                    {{else}}
+                        <li><a href="/"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a></li>
+                        <li><a href="/login"><i class="fas fa-sign-in-alt"></i> <span class="nav-text">Login/Register</span></a></li>
+                    {{/if}}
+                </ul>
+            </nav>
+        </div>
+        <div class="content-wrapper">
+            {{{body}}}
+        </div>
+        
+    </div>
 
     <footer>
         <p>© {{{copyrightYear}}} {{{appName}}}. All rights reserved.</p>
