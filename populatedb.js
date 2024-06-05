@@ -1,7 +1,6 @@
 const sqlite = require('sqlite');
 const sqlite3 = require('sqlite3');
 
-// Placeholder for the database file name
 const dbFileName = 'database.db';
 
 async function initializeDB() {
@@ -25,6 +24,16 @@ async function initializeDB() {
             likes INTEGER NOT NULL,
             likedBy TEXT DEFAULT '[]'
         );
+
+        CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            postId INTEGER NOT NULL,
+            username TEXT NOT NULL,
+            content TEXT NOT NULL,
+            timestamp DATETIME NOT NULL,
+            FOREIGN KEY(postId) REFERENCES posts(id),
+            FOREIGN KEY(username) REFERENCES users(username)
+        );
     `);
 
     // Sample data - Replace these arrays with your own data
@@ -36,6 +45,11 @@ async function initializeDB() {
     const posts = [
         { title: 'First Post', content: 'This is the first post', username: 'user1', timestamp: '2024-01-01 12:30', likes: 0},
         { title: 'Second Post', content: 'This is the second post', username: 'user2', timestamp: '2024-01-02 12:30', likes: 0}
+    ];
+
+    const comments = [
+        { postId: 1, username: 'user2', content: 'Great post!', timestamp: '2024-01-01 13:00' },
+        { postId: 2, username: 'user1', content: 'Thanks for sharing!', timestamp: '2024-01-02 13:00' }
     ];
 
     // Insert sample data into the database
@@ -50,6 +64,13 @@ async function initializeDB() {
         return db.run(
             'INSERT INTO posts (title, content, username, timestamp, likes) VALUES (?, ?, ?, ?, ?)',
             [post.title, post.content, post.username, post.timestamp, post.likes]
+        );
+    }));
+
+    await Promise.all(comments.map(comment => {
+        return db.run(
+            'INSERT INTO comments (postId, username, content, timestamp) VALUES (?, ?, ?, ?)',
+            [comment.postId, comment.username, comment.content, comment.timestamp]
         );
     }));
 

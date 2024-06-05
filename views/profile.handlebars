@@ -1,32 +1,33 @@
 {{! Use the main layout }}
 {{!< main }}
-
-<div class="profile-container">
-    <div class="profile-avatar">
-        <img src="{{#if user.avatarUrl}}{{user.avatarUrl}}{{else}}/avatar/{{user.username}}{{/if}}" alt="Avatar">
+    <div class="profile-page">
+    <div class="profile-container">
+        <div class="profile-avatar">
+            <img src="{{#if user.avatarUrl}}{{user.avatarUrl}}{{else}}/avatar/{{user.username}}{{/if}}" alt="Avatar">
+        </div>
+        
+        <section class="profile-info">
+            <h1 class="profile-info-small">User Profile</h1>
+            <p><b>Username:</b> {{user.username}}</p>
+            <p><b>Member since:</b> {{user.memberSince}}</p>
+        </section>
+            <h2>Your {{{postNeoType}}}s</h2>
     </div>
-    
-    <section class="profile-info">
-        <h1 class="profile-info-small">User Profile</h1>
-        <p><b>Username:</b> {{user.username}}</p>
-        <p><b>Member since:</b> {{user.memberSince}}</p>
+
+    <section class="user-posts">
+        <div class="toots">
+
+        </div>
+        
+        {{#if posts.length}}
+            <ul>
+                {{#each posts}}
+                    {{> post this user=../user loggedIn=../loggedIn}}            
+                {{/each}}
+            </ul>
+        {{else}}
+            <p class="no-post">You have not posted yet!</p>
+        {{/if}}
     </section>
 </div>
 
-<section class="user-posts">
-    <div class="toots">
-         <h2>Your {{{postNeoType}}}s</h2>
-    </div>
-    
-    <!-- you'll need to make this conditaionl and #each expression work -->
-    {{#if posts.length}}
-        <ul>
-            {{#each posts}}
-                <!-- you have to pass the user in to posts and this is the syntax -->
-                {{> post this user=../user loggedIn=../loggedIn}}            
-            {{/each}}
-        </ul>
-    {{else}}
-        <p class="no-post">You have not posted yet!</p>
-    {{/if}}
-</section>

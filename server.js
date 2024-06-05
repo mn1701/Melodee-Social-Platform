@@ -333,7 +333,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Route to render the login/register page for login
 app.get('/login', (req, res) => {
-    res.render('loginRegister', { loginError: req.query.error });
+    res.render('loginRegister', { appName: 'Tooters' });
 });
 
 // Route to render the login/register page for registration
@@ -361,8 +361,9 @@ app.get('/addPost', isAuthenticated, (req, res) => {
 app.get('/post/:id', async (req, res) => {
     const db = await dbPromise;
     const post = await db.get('SELECT * FROM posts WHERE id = ?', [req.params.id]);
+    const comments = await db.all('SELECT * FROM comments WHERE postId = ?', [req.params.id]);
     if (post) {
-        res.render('postDetail', { post, user: req.session.user });
+        res.render('postDetail', { post, comments, user: req.session.user });
     } else {
         res.redirect('/error');
     }
@@ -453,6 +454,37 @@ app.post('/delete/:id', isAuthenticated, async (req, res) => {
 
 app.get('/write-post', isAuthenticated, (req, res) => {
     res.render('write-post', { user: req.session.user });
+});
+
+app.post('/comments', isAuthenticated, async (req, res) => {
+    const { postId, content } = req.body;
+    const user = req.session.user;
+    if (user) {
+        const db = await dbPromise;
+        const timestamp = new Date().toISOString();
+        const formattedTimestamp = formatTimestamp(timestamp, true);
+        await db.run('INSERT INTO comments (postId, username, content, timestamp) VALUES (?, ?, ?, ?)', [postId, user.username, content, formattedTimestamp]);
+        res.redirect(`/post/${postId}`);
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post('/delete-comment/:id', isAuthenticated, async (req, res) => {
+    const user = req.session.user;
+    const commentId = req.params.id;
+    const postId = req.body.postId;
+
+    if (user) {
+        const db = await dbPromise;
+        const comment = await db.get('SELECT * FROM comments WHERE id = ?', [commentId]);
+
+        if (comment && comment.username === user.username) {
+            // Only allow the owner to delete
+            await db.run('DELETE FROM comments WHERE id = ?', [commentId]);
+        }
+    }
+    res.redirect(`/post/${postId}`);
 });
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

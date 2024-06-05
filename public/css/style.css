@@ -10,6 +10,49 @@ body {
     display: flex;
 }
 
+.login-register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-container {
+    max-width: 400px; /* Set a maximum width for the login container */
+    min-width: 300px; /* Set a minimum width for the login container */
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-right: 220px;
+    margin-top: 100px;
+}
+
+.login-area {
+    background-color: #222; /* Slightly lighter grey */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#google-login-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#google-login-button:hover {
+    background-color: #123962;
+}
+
 /* Sidebar Styles */
 .sidebar {
     background-color: #111211; /* Same dark grey */
@@ -214,7 +257,7 @@ textarea#post-c {
     border-top: 1px solid #f1f1f1; /* Thin white top border */
     border-bottom: 1px solid #f1f1f1; /* Thin white bottom border */
     border-radius: 0; /* Remove border radius */
-    width: 100%;
+    width: 80%;
 }
 
 .post:first-child {
@@ -270,6 +313,22 @@ textarea#post-c {
     color: #f1f1f1; /* White text */
 }
 
+.comment-icon {
+    margin-left: 40px;
+    color: #f1f1f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.comment-icon i {
+    margin-right: 0px;
+}
+
+.comment-icon:hover {
+    color: #90bcff;
+}
+
 /* Ensure all media elements don't overflow */
 .post-media {
     max-width: 100%;
@@ -295,7 +354,7 @@ textarea#post-c {
     border: 0;
 }
 
-.like-button, .delete-button {
+.like-button, .delete-button, .delete-comment-button {
     color: #90bcff; /* Light blue for buttons */
     background-color: #111211; /* Match post background */
     border: none;
@@ -303,7 +362,12 @@ textarea#post-c {
     font-size: 1.2em;
 }
 
-.like-button:hover, .delete-button:hover {
+.delete-comment-button {
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+
+.like-button:hover, .delete-button:hover, .delete-comment-button:hover {
     color: #f04646;
     background-color: #111211;
 }
@@ -349,6 +413,151 @@ input[type="text"], textarea {
     align-items: center;
     justify-content: center;
 }
+.comments-section {
+    margin-top: 0px;
+    padding: 20px;
+    background-color: #111211; /* Same dark grey */
+    border-radius: 8px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.comments-section h3 {
+    margin-bottom: 10px;
+    color: #f1f1f1;
+}
+
+.comments-section ul {
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+}
+
+.comments-section li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #111211; /* Slightly lighter grey */
+    width: 97%;
+    border-bottom: 1px solid #ccc;
+}
+
+.comments-section .comment-username {
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.comments-section .comment-timestamp {
+    margin-left: 10px;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.comments-section form {
+    margin-top: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea-container {
+    position: relative;
+    width: 100%;
+}
+
+.comments-section textarea {
+    width: 100%; /* Full width */
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-right: 0px; /* Space for the button */
+    padding-bottom: 60px; /* Extra space at the bottom */
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #111211; /* Dark grey for inputs */
+    color: #f1f1f1; /* Light grey text */
+    resize: none; /* Disable resizing */
+    overflow: hidden; /* Hide overflow */
+    min-height: 80px; /* Minimum height to ensure an extra line */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.comments-section .comment-button {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    padding: 10px 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+}
+
+.comments-section .comment-button:hover {
+    background-color: #123962;
+}
+
+.post-detail .post{
+    border-bottom: none;
+}
+
+.profile-page {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-container {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: -100px;
+}
+
+.profile-avatar img {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.profile-info {
+    text-align: center;
+}
+
+.user-posts {
+    width: 100%;
+}
+
+.user-posts .toots {
+    margin-bottom: 20px;
+}
+
+.user-posts ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-posts ul li {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.no-post {
+    text-align: center;
+}
+
 
 @media (max-width: 1000px) {
     .sidebar {
@@ -383,7 +592,7 @@ input[type="text"], textarea {
     }
 
     .content-container {
-        margin-top: -300px;
+        margin-top: -50px;
         scale: 80%;
         border: none;
         margin-left: -300px;
@@ -394,16 +603,19 @@ input[type="text"], textarea {
     }
 
     .post-form{
-        margin-top: 300px;
+        margin-top: 10px;
         line-height: 28px;
      }
-}
 
+     .profile-page {
+        margin-left: -150px;
+    }
+}
 
 @media (max-width: 590px) {
     .content-container {
         width: 480px;
-        margin-top: -270px;
+        margin-top: -50px;
     }
 
     .sidebar {
@@ -439,8 +651,4 @@ input[type="text"], textarea {
         margin: 0 auto; /* Center the image */
         display: block; /* Ensure the image doesn't extend beyond container width */
     }
-
-    .post-form{
-        margin-top: 250px;
-     }
 }

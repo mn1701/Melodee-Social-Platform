@@ -1,0 +1,157 @@
+{{! Use the main layout }}
+{{!< main }}
+<div class="content-wrapper">
+    <section class="content-container post-detail">
+        <div class="post">
+            <div class="post-content preserve-newlines">
+                <div class="post-header">
+                        <img class="post-avatar" src="{{#if avatar_url}}{{avatar_url}}{{else}}/avatar/{{post.username}}{{/if}}" alt="Avatar">
+                        <span class="post-username">{{post.username}}</span>
+                        <span class="post-timestamp">{{post.timestamp}}</span>
+                    </div>
+                    <h3>{{post.title}}</h3>
+                    <p>{{post.content}}</p>
+                    {{#if post.mediaPath}}
+                        <div class="post-media">
+                            {{#ifCond post.mediaType 'image'}}
+                                <img src="{{post.mediaPath}}" alt="Image" style="max-width: 100%; height: auto; display: block; margin: 10px auto;">
+                            {{else ifCond post.mediaType 'audio'}}
+                                <audio controls>
+                                    <source src="{{post.mediaPath}}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            {{else ifCond post.mediaType 'video'}}
+                                <video controls>
+                                    <source src="{{post.mediaPath}}" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                            {{/ifCond}}
+                        </div>
+                    {{/if}}
+                    {{#if post.mediaUrl}}
+                        <div class="post-media {{#ifCond post.mediaType 'youtube'}}youtube{{/ifCond}}">
+                            {{#ifCond post.mediaType 'youtube'}}
+                                <iframe src="{{extractYouTubeEmbedUrl post.mediaUrl}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            {{else ifCond post.mediaType 'soundcloud'}}
+                                <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="{{post.mediaUrl}}"></iframe>
+                            {{/ifCond}}
+                        </div>
+                    {{/if}}
+
+                <div class="post-status-bar">
+                    {{#ifCond post.username user.username}}
+                        <button class="delete-button" data-id="{{id}}"><i class="fas fa-trash-alt"></i></button>
+                    {{else}}
+                        <button class="like-button" data-id="{{id}}" data-logged-in="{{loggedIn}}">♥</button>
+                    {{/ifCond}}
+                    <span>{{post.likes}} likes</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="comments-section">
+        <form action="/comments" method="POST">
+            <input type="hidden" name="postId" value="{{post.id}}">
+            <div class="textarea-container">
+                <textarea name="content" placeholder="Add a comment..." required oninput="toggleCommentButton(this)"></textarea>
+                <button type="submit" class="comment-button" id="comment-button" style="display: none;">Comment</button>
+            </div>
+        </form>
+        {{#if comments.length}}
+            <ul>
+                {{#each comments}}
+                    <li>
+                        <span class="comment-username">{{username}}</span>
+                        <span class="comment-timestamp">{{timestamp}}</span>
+                        <p>{{content}}</p>
+                        {{#ifCond username ../user.username}}
+                            <form action="/delete-comment/{{id}}" method="POST" style="display: inline;">
+                                <input type="hidden" name="postId" value="{{../post.id}}">
+                                <button type="submit" class="delete-comment-button"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        {{/ifCond}}
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>No comments yet. Be the first to comment!</p>
+        {{/if}}
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.like-button').forEach(button => {
+                    button.addEventListener('click', handleLikeClick);
+                });
+
+                document.querySelectorAll('.delete-button').forEach(button => {
+                    button.addEventListener('click', handleDeleteClick);
+                });
+            });
+
+            function handleLikeClick(event) {
+                const postId = event.target.getAttribute('data-id');
+                const loggedIn = event.target.getAttribute('data-logged-in') === 'true';
+                console.log('Logged In:', loggedIn); // debugging logs
+                console.log('Post ID:', postId); // debugging logs
+
+                if (!loggedIn) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                fetch(`/like/${postId}`, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });      
+            }
+
+            function handleDeleteClick(event) {
+                const buttonElement = event.target.closest('.delete-button');
+                const postId = buttonElement.getAttribute('data-id');
+                fetch(`/delete/${postId}`, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }    
+            function toggleCommentButton(textarea) {
+                const commentButton = document.getElementById('comment-button');
+                if (textarea.value.trim() !== '') {
+                    commentButton.style.display = 'block';
+                } else {
+                    commentButton.style.display = 'none';
+                }
+
+                // Adjust textarea height
+                textarea.style.height = 'auto'; // Reset height
+                textarea.style.height = `${textarea.scrollHeight}px`; // Set new height based on scroll height
+            }
+
+            // Ensure initial height adjustment for the textarea
+            document.addEventListener('DOMContentLoaded', () => {
+                const textarea = document.querySelector('.comments-section textarea');
+                textarea.style.height = 'auto';
+                textarea.style.height = `${textarea.scrollHeight}px`;
+            });
+
+            function handleDeleteClick(event) {
+                const buttonElement = event.target.closest('.delete-button');
+                const postId = buttonElement.getAttribute('data-id');
+                fetch(`/delete/${postId}`, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+
+        </script>
+    </section>
+</div>
