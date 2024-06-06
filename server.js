@@ -115,9 +115,9 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
-    res.locals.appName = 'Tooters';
+    res.locals.appName = 'Melodee';
     res.locals.copyrightYear = 2024;
-    res.locals.postNeoType = 'Toot';
+    res.locals.postNeoType = 'Melo';
     res.locals.loggedIn = req.session.loggedIn || false;
     res.locals.userId = req.session.userId || '';
     res.locals.user = req.session.user || {};
@@ -280,22 +280,22 @@ app.get('/', async (req, res) => {
     const posts = await getPosts(sort);
     const user = req.session.user || {};
     
-    let feedTitle = 'Toots Feed';
+    let feedTitle = 'Melos Feed';
     switch (sort) {
         case 'time_asc':
-            feedTitle = 'Oldest Toots';
+            feedTitle = 'Oldest Melos';
             break;
         case 'time_desc':
-            feedTitle = 'Recent Toots';
+            feedTitle = 'Recent Melos';
             break;
         case 'likes_asc':
-            feedTitle = 'Least Liked Toots';
+            feedTitle = 'Least Liked Melos';
             break;
         case 'likes_desc':
-            feedTitle = 'Most Liked Toots';
+            feedTitle = 'Most Liked Melos';
             break;
         default:
-            feedTitle = 'Toots Feed';
+            feedTitle = 'Melos Feed';
             break;
     }
 
@@ -333,7 +333,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Route to render the login/register page for login
 app.get('/login', (req, res) => {
-    res.render('loginRegister', { appName: 'Tooters' });
+    res.render('loginRegister', { appName: 'Melodee' });
 });
 
 // Route to render the login/register page for registration
