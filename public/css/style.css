@@ -611,6 +611,10 @@ input[type="text"], textarea {
      .profile-page {
         margin-left: -150px;
     }
+
+    .post-detail {
+        margin-top: 50px;
+    }
 }
 
 @media (max-width: 590px) {
@@ -657,4 +661,8 @@ input[type="text"], textarea {
         margin: 0 auto; /* Center the image */
         display: block; /* Ensure the image doesn't extend beyond container width */
     }
+    .post-detail {
+        margin-top: 50px;
+    }
+
 }
