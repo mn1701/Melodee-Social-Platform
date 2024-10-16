@@ -1,5 +1,5 @@
 
-# Social Media Forum
+# Melodee Social
 
 A web-based social media forum for musicians where users can create posts in various formats, including text, video, and audio, as well as comment and interact with others. This project is built using HTML, CSS, JavaScript, Handlebars, Express, Node.js, and SQLite for the backend.
 
