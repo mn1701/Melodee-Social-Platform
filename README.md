@@ -72,17 +72,18 @@ If you are the admin, you can:
 ## Project Structure
 The project follows the MVC (Model-View-Controller) design pattern. Below is a breakdown of the key folders:
 
-\`\`\`
-├── public              # Frontend assets (CSS, JS, images, video, audio)
-├── views               # Handlebars templates
-├── routes              # Express routes for handling HTTP requests
-├── models              # Database models and logic
-├── config              # Configuration files (e.g., database, environment)
-├── scripts             # Scripts for tasks like database setup
-├── uploads             # Directory to store uploaded media (video, audio)
-├── app.js              # Main entry point of the application
-└── README.md           # Project documentation
-\`\`\`
+## Project Structure
+The project follows the MVC (Model-View-Controller) design pattern. Below is a breakdown of the key folders:
+
+- **public**: Frontend assets (CSS, JS, images, video, audio)
+- **views**: Handlebars templates
+- **routes**: Express routes for handling HTTP requests
+- **models**: Database models and logic
+- **config**: Configuration files (e.g., database, environment)
+- **scripts**: Scripts for tasks like database setup
+- **uploads**: Directory to store uploaded media (video, audio)
+- **app.js**: Main entry point of the application
+- **README.md**: Project documentation
 
 ## Technologies Used
 - **HTML5/CSS3**: For creating the structure and styling the front end.
